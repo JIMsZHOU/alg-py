@@ -32,4 +32,26 @@ class Solution:
     
 class Solution1(Solution):
     def maxProfit(self, prices: List[int]) -> int:
-        
+        '''
+            sliding window
+            find every lowest/highest point for each window
+            when reach newer low point, start next window, 
+                since it may result in extent new range
+            compare each window find max
+        '''
+        buy = 0
+        sell = 1
+        max_profit = 0
+        while (sell < len(prices)):
+            # cur profile could be minus
+            cur_profit = prices[sell] - prices[buy]
+            # when sell smaller then buy, means find new lower point
+            if prices[sell] < prices[buy]:
+                # move window start from this new loe point
+                buy = sell
+            else:
+                # otherwise, keep extend current window find max
+                max_profit = max(cur_profit, max_profit)
+            # move sell point to find overall max
+            sell += 1
+        return max_profit
